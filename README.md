@@ -13,7 +13,7 @@ The UFO Finder webpage is designed to allow users to see all UFO sightings withi
 * Country
 * Shape
 
-To the right of the table, which will be showing all data points by default when first visiting or refreshing the site, is an area to enter the filters.
+To the left of the table, which will be showing all data points by default when first visiting or refreshing the site, is an area to enter the filters.
 
 <img src='https://github.com/bradydwilton/UFOs/blob/main/images/no_filters.png'>
 
