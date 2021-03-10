@@ -27,41 +27,53 @@ function buildTable(data) {
 };
 
 // 1. Create a variable to keep track of all the filters as an object.
-var filters = [];
+let filters = {};
+
+function updateFilters() {
+  let changedElement = d3.select(this);
+
+  let elementValue = changedElement.property("value");
+  console.log(elementValue);
+
+  let filterId = changedElement.attr("id");
+  console.log(filterId);
+
+  if (elementValue) {
+    filters[filterId] = elementValue;
+  }
+
+  else {
+    delete filters[filterId];
+  }
+
+  filterTable(filters);
+}
+
+d3.selectAll("input").on("change", updateFilters);
 
 // 3. Use this function to update the filters. 
-function updateFilters() {
+function updateFilters_old() {
 
   // 4a. Save the element that was changed as a variable.
-  let date_element = d3.select('#datetime');
-  let city_element = d3.select('#city');
-  let state_element = d3.select('#state');
-  let country_element = d3.select('#country');
-  let shape_element = d3.select('#shape');
-  // 4b. Save the value that was changed as a variable.
-  let date_value = date_element.property('value');
-  let city_value = city_element.property('value');
-  let state_value = state_element.property('value');
-  let country_value = country_element.property('value');
-  let shape_value = shape_element.property('value');
-  // 4c. Save the id of the filter that was changed as a variable.
-  let date_id = 'datetime';
-  let city_id = 'city';
-  let state_id = 'state';
-  let country_id = 'country';
-  let shape_id = 'shape';
+  let changedElement = d3.select(this);
+  console.log(elementValue);
 
+  // 4b. Save the value that was changed as a variable.
+  let elementValue = changedElement.property("value");
+  console.log(elementValue);
+
+  // 4c. Save the id of the filter that was changed as a variable.
+  let filterId = changedElement.attr("id");
+  console.log(filterId);
 
   // 5. If a filter value was entered then add that filterId and value
   // to the filters list. Otherwise, clear that filter from the filters object.
-  filters = [];
-  if (date_value) { filters.push({ 'filterId': date_id, 'value': date_value }) };
-  if (city_value) { filters.push({ 'filterId': city_id, 'value': city_value }) };
-  if (state_value) { filters.push({ 'filterId': state_id, 'value': state_value }) };
-  if (country_value) { filters.push({ 'filterId': country_id, 'value': country_value }) };
-  if (shape_value) { filters.push({ 'filterId': shape_id, 'value': shape_value }) };
-
-
+  if (elementValue) {
+    filters[filterId] = elementValue;
+  }
+  else {
+    delete filters[filterId];
+  }
 
   // 6. Call function to apply all filters and rebuild the table
   filterTable(filters);
@@ -76,20 +88,12 @@ function filterTable(filters) {
 
   // 9. Loop through all of the filters and keep any data that
   // matches the filter values
-  filters.forEach(function (entry) {
-    filteredData = filteredData.filter(row => row[entry.filterId] === entry.value)
-  });
-
-  // filters.forEach((entry) => {
-  //   if (entry.filterId) {
-  //     id = entry.filterId;
-  //     filteredData = filteredData.filter(row => row.id === entry.value);
-  //   };
-  // });
+  for (id in filters) {
+    filteredData = filteredData.filter(row => row[id] === filters[id]);
+  }
 
   // 10. Finally, rebuild the table using the filtered data
   buildTable(filteredData);
-
 }
 
 // 2. Attach an event to listen for changes to each filter
